@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-backend-app
+spec:
+  replicas: 3  # Adjust the number of replicas as desired
+  selector:
+    matchLabels:
+      app: my-backend-app
+  template:
+    metadata:
+      labels:
+        app: my-backend-app
+    spec:
+      containers:
+        - name: my-backend-app
+          image: my-backend-app:latest
+          ports:
+            - containerPort: 8080
