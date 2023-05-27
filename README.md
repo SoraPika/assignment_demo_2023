@@ -15,7 +15,7 @@ To use the application and scale it using Kubernetes, follow these steps:
     POST localhost:8080/api/send
     {
     "chat": "user1:user2",
-    "text": "chuuuu",
+    "text": "Pikachuuuu",
     "sender": "user1"
     }
 
