@@ -1,23 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: http-server-deployment
+  name: rpc-server-deployment
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: http-server
+      app: rpc-server
   template:
     metadata:
       labels:
-        app: http-server
+        app: rpc-server
     spec:
       containers:
-        - name: http-server
-          image: localhost:5000/http-server-image
-
+        - name: rpc-server
+          image: localhost:5000/rpc-server-image
           ports:
-            - containerPort: 8080
+            - containerPort: 8888
           resources:
             limits:
               cpu: 500m
@@ -27,12 +26,12 @@ spec:
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: http-server-hpa
+  name: rpc-server-hpa
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: http-server-deployment
+    name: rpc-server-deployment
   minReplicas: 1
   maxReplicas: 7
   targetCPUUtilizationPercentage: 80

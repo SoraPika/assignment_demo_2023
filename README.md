@@ -38,32 +38,25 @@ To use the application and scale it using Kubernetes, follow these steps:
         Starts to get some IO timeout > 5000QPS.
         Some scaling can be done probably after 1000QPS.
 
-5. Create a Kubernetes deployment using the provided deployment configuration file:
-   ```
-   $ kubectl apply -f deployment.yaml
-   ```
+5. Scaling Elastically - using minikube
 
-   This command will create the necessary Kubernetes resources, including deployments and services, based on the configuration specified in `deployment.yaml`.
+   I started by building Docker images for both my HTTP server and RPC server applications using the docker build command. I tagged the images appropriately for each application.
 
-6. Check the status of the deployments:
-   ```
-   $ kubectl get deployments
-   ```
+   To ensure scalability, I pushed the Docker images to a local registry. I used the docker push command and made sure the registry was running and accessible.
 
-   Ensure that the desired number of replicas for both `http-server` and `rpc-server` are running.
+   I created deployment YAML files (http-server-deployment.yaml and rpc-server-deployment.yaml) to define the deployments and autoscaling configurations for each application. In the YAML files, I specified the respective images for each application, such as localhost:5000/http-server-image and localhost:5000/rpc-server-image, reflecting the images in my local registry.
 
-## Scaling the Application
+   I configured the resource limits and requests in the YAML files to define the CPU requirements for each application.
 
-To scale the application, you can adjust the number of replicas in the `deployment.yaml` file or use the `kubectl scale` command. Here's an example of scaling both `http-server` and `rpc-server` to 5 replicas:
+   To enable autoscaling for each application, I included an autoscaling section in each YAML file. I set the scaleTargetRef to point to the respective deployments and specified the minimum and maximum number of replicas using minReplicas and maxReplicas respectively.
 
-```
-$ kubectl scale deployment http-server --replicas=5
-$ kubectl scale deployment rpc-server --replicas=5
-```
+   I defined the threshold for autoscaling based on CPU usage by setting the targetCPUUtilizationPercentage.
 
-Kubernetes will handle the scaling process by creating or terminating the necessary pods to match the desired replica count.
+   Using the kubectl apply command, I applied the deployment YAML files to create the deployments and enable autoscaling for both the HTTP server and RPC server applications.
 
-## Conclusion
+   To test the scalability and performance of both applications, I used JMeter, an open-source load testing tool. I configured JMeter to simulate multiple concurrent users and requests for each application to assess how they handled the load.
+
+   I monitored the performance and scaling of both applications using the Minikube Dashboard. The dashboard provided real-time insights into the deployments, including the number of replicas, CPU usage, and other relevant metrics for both the HTTP server and RPC server applications.
 
 By following the above steps, you can use and scale your backend application built with Golang and Kubernetes. Kubernetes simplifies the deployment and scaling process, allowing you to handle increased traffic, provide high availability, and easily adjust the number of replicas based on demand.
 
