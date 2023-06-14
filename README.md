@@ -31,7 +31,8 @@ To use the application and scale it using Kubernetes, follow these steps:
 
     To retrieve all the messages.
 
-4. Installed JMeter:
+4. For Unit Testing: Need to comment out the test cases in handler_test.go first
+Installed JMeter:
    Tested my application with it:
         No issues for 20 QPS.
         No issues for 1000QPS. 
